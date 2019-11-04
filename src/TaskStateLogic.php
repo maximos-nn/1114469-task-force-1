@@ -2,22 +2,22 @@
 
 class TaskStateLogic
 {
-    const ACTION_CREATE = 1;
-    const ACTION_CANCEL = 2;
-    const ACTION_ASSIGN = 3;
-    const ACTION_FINISH = 4;
-    const ACTION_REFUSE = 5;
+    const ACTION_CREATE = 'создать';
+    const ACTION_CANCEL = 'отменить';
+    const ACTION_ASSIGN = 'назначить';
+    const ACTION_FINISH = 'завершить';
+    const ACTION_REFUSE = 'отказаться';
 
-    const STATE_INVALID = 0; //под вопросом
-    const STATE_NEW = 1;
-    const STATE_CANCELED = 2;
-    const STATE_INPROGRESS = 3;
-    const STATE_FINISHED = 4;
-    const STATE_REFUSED = 5;
+    const STATE_INVALID = 'не определено'; //под вопросом
+    const STATE_NEW = 'новое';
+    const STATE_CANCELED = 'отменено';
+    const STATE_INPROGRESS = 'выполняется';
+    const STATE_FINISHED = 'завершено';
+    const STATE_FAILED = 'провалено';
 
     // Пока не ясна логика использования
-    // const ROLE_CUSTOMER = 0;
-    // const ROLE_CONTRACTOR = 1;
+    // const ROLE_CUSTOMER = 'заказчик';
+    // const ROLE_CONTRACTOR = 'исполнитель';
 
     // private int $customerId;
     // private int $contractorId;
@@ -39,14 +39,14 @@ class TaskStateLogic
     {
         return [
             self::STATE_CANCELED,
+            self::STATE_FAILED,
             self::STATE_FINISHED,
             self::STATE_INPROGRESS,
-            self::STATE_NEW,
-            self::STATE_REFUSED
+            self::STATE_NEW
         ];
     }
 
-    public function getNextState(int $action): int //?int
+    public function getNextState(string $action): string
     {
         switch ($action) {
             case self::ACTION_CREATE:
@@ -66,7 +66,7 @@ class TaskStateLogic
                 break;
 
             case self::ACTION_REFUSE:
-                $result = self::STATE_REFUSED;
+                $result = self::STATE_FAILED;
                 break;
 
             default:
