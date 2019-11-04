@@ -2,18 +2,21 @@
 
 class TaskStateLogic
 {
-    const ACTION_CREATE = 'создать';
+    const ACTION_CREATE = 'создать';        // под вопросом
     const ACTION_CANCEL = 'отменить';
     const ACTION_ASSIGN = 'назначить';
     const ACTION_FINISH = 'завершить';
     const ACTION_REFUSE = 'отказаться';
+    const ACTION_RESPOND = 'откликнуться';  // не меняет состояние задания
+                                            // с другой стороны, отсутствие откликов делает
+                                            // невозможным переход в состояние 'В работе'
 
-    const STATE_INVALID = 'не определено'; //под вопросом
-    const STATE_NEW = 'новое';
-    const STATE_CANCELED = 'отменено';
-    const STATE_INPROGRESS = 'выполняется';
-    const STATE_FINISHED = 'завершено';
-    const STATE_FAILED = 'провалено';
+    const STATE_INVALID = 'Не определено';  //под вопросом
+    const STATE_NEW = 'Новое';
+    const STATE_CANCELED = 'Отменено';
+    const STATE_INPROGRESS = 'В работе';
+    const STATE_FINISHED = 'Выполнено';
+    const STATE_FAILED = 'Провалено';
 
     // Пока не ясна логика использования
     // const ROLE_CUSTOMER = 'заказчик';

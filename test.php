@@ -8,7 +8,7 @@ assert($logic->getNextState(TaskStateLogic::ACTION_CREATE) === TaskStateLogic::S
 assert($logic->getNextState(TaskStateLogic::ACTION_CANCEL) === TaskStateLogic::STATE_CANCELED);
 assert($logic->getNextState(TaskStateLogic::ACTION_ASSIGN) === TaskStateLogic::STATE_INPROGRESS);
 assert($logic->getNextState(TaskStateLogic::ACTION_FINISH) === TaskStateLogic::STATE_FINISHED);
-assert($logic->getNextState(TaskStateLogic::ACTION_REFUSE) === TaskStateLogic::STATE_REFUSED);
+assert($logic->getNextState(TaskStateLogic::ACTION_REFUSE) === TaskStateLogic::STATE_FAILED);
 
 var_dump($logic->getActions());
 var_dump($logic->getStates());
