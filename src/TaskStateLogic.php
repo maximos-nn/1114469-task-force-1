@@ -53,29 +53,17 @@ class TaskStateLogic
     {
         switch ($action) {
             case self::ACTION_CREATE:
-                $result = self::STATE_NEW;
-                break;
-
+                return self::STATE_NEW;
             case self::ACTION_ASSIGN:
-                $result = self::STATE_INPROGRESS;
-                break;
-
+                return self::STATE_INPROGRESS;
             case self::ACTION_CANCEL:
-                $result = self::STATE_CANCELED;
-                break;
-
+                return self::STATE_CANCELED;
             case self::ACTION_FINISH:
-                $result = self::STATE_FINISHED;
-                break;
-
+                return self::STATE_FINISHED;
             case self::ACTION_REFUSE:
-                $result = self::STATE_FAILED;
-                break;
-
+                return self::STATE_FAILED;
             default:
-                $result = self::STATE_INVALID;
-                break;
+                return self::STATE_INVALID;
         }
-        return $result;
     }
 }
