@@ -1,5 +1,7 @@
 <?php
-require 'src/TaskStateLogic.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+use TaskForce\TaskStateLogic;
 
 $logic = new TaskStateLogic;
 
