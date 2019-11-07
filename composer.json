@@ -1,0 +1,10 @@
+{
+    "name": "maximos/1114469-task-force-1",
+    "type": "project",
+    "require": {},
+    "autoload": {
+      "psr-4": {
+        "TaskForce\\": "src/"
+      }
+    }
+}

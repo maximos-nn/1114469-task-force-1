@@ -1,5 +1,7 @@
 <?php
 
+namespace TaskForce;
+
 class TaskStateLogic
 {
     const ACTION_CREATE = 'создать';        // под вопросом
