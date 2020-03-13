@@ -20,29 +20,29 @@ DROP TABLE IF EXISTS `users`;
 DROP TABLE IF EXISTS `files`;
 
 CREATE TABLE `categories` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL UNIQUE KEY,
     `alias` varchar(255) NOT NULL UNIQUE KEY
 )  CHARSET=utf8;
 
 CREATE TABLE `cities` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `name` varchar(255) NOT NULL UNIQUE KEY
 )  CHARSET=utf8;
 
 CREATE TABLE `users` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `email` varchar(255) NOT NULL UNIQUE,
     `password` varchar(255) NOT NULL
 )  CHARSET=utf8;
 
 CREATE TABLE `files` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `path` varchar(255)
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
+    `path` varchar(255) NOT NULL
 ) CHARSET=utf8;
 
 CREATE TABLE `profiles` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `user_id` int unsigned NOT NULL UNIQUE KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `name` varchar(255) NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE `profiles` (
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_favourites` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `favored_by_id` int unsigned NOT NULL,
     `favourite_id` int unsigned NOT NULL,
     UNIQUE KEY `idx_favored_by_id_favourite_id` (`favored_by_id`,`favourite_id`),
@@ -73,7 +73,7 @@ CREATE TABLE `profile_favourites` (
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_settings` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
     `notify_message` bool NOT NULL DEFAULT TRUE,
     `notify_assign` bool NOT NULL DEFAULT TRUE,
@@ -87,7 +87,7 @@ CREATE TABLE `profile_settings` (
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_stats` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
     `tasks_total` int unsigned NOT NULL DEFAULT 0,
     `tasks_failed` int unsigned NOT NULL DEFAULT 0,
@@ -98,7 +98,7 @@ CREATE TABLE `profile_stats` (
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_categories` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
     `category_id` int unsigned NOT NULL,
     UNIQUE KEY `idx_profile_id_category_id` (`profile_id`,`category_id`),
@@ -108,7 +108,7 @@ CREATE TABLE `profile_categories` (
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_portfolios` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
     `file_id`  int unsigned NOT NULL,
     KEY `idx_fk_profile_portfolios_profile` (`profile_id`),
@@ -118,7 +118,7 @@ CREATE TABLE `profile_portfolios` (
 )  CHARSET=utf8;
 
 CREATE TABLE `tasks` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `profile_id` int unsigned NOT NULL,
     `category_id` int unsigned NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE `tasks` (
 -- провалено: failed_time is not null and exists (select 1 from task_feedbacks where task_id = id)
 
 CREATE TABLE `task_files` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `task_id` int unsigned NOT NULL,
     `name` varchar(255) NOT NULL,
     `file_id` int unsigned NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE `task_files` (
 )  CHARSET=utf8;
 
 CREATE TABLE `task_feedbacks` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `task_id` int unsigned NOT NULL,
     `comment` text,
@@ -168,7 +168,7 @@ CREATE TABLE `task_feedbacks` (
 ) CHARSET=utf8;
 
 CREATE TABLE `task_responses` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `task_id` int unsigned NOT NULL,
     `profile_id` int unsigned NOT NULL,
@@ -182,7 +182,7 @@ CREATE TABLE `task_responses` (
 ) CHARSET=utf8;
 
 CREATE TABLE `task_messages` (
-    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `task_id` int unsigned NOT NULL,
     `from_id` int unsigned NOT NULL,
