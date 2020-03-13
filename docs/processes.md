@@ -6,6 +6,7 @@
 * Category
 * Location
 * User
+* File
 * Profile
 * ProfileSetting
 * ProfileStat
@@ -41,13 +42,13 @@
     TaskBrowserService, LocationService, Category, Task
 
 ### Добавление задания
-    TaskManagerService, LocationService, Category, Location, Task, TaskFile
+    TaskManagerService, LocationService, Category, Location, Task, TaskFile, File
 
 ### Просмотр списка исполнителей
-    ProfileService, TaskBrowserService, Profile, ProfileSetting, ProfileStat, ProfileCategory, Category, Task, TaskFeedback
+    ProfileService, TaskBrowserService, Profile, ProfileSetting, ProfileStat, ProfileCategory, Category, Task, TaskFeedback, File
 
 ### Просмотр задания
-    TaskBrowserService, LocationService, ProfileService, NotifyService, Category, Location, Task, TaskFile, TaskResponse, TaskMessage, Profile, ProfileCategory, ProfileStat, ProfileSetting
+    TaskBrowserService, LocationService, ProfileService, NotifyService, Category, Location, Task, TaskFile, TaskResponse, TaskMessage, Profile, ProfileCategory, ProfileStat, ProfileSetting, File
 
 ### Отклик на задание
     TaskManagerService, Task, TaskResponse
@@ -65,10 +66,10 @@
     TaskManagerService, ProfileService, Task, ProfileStat
 
 ### Просмотр профиля исполнителя
-    ProfileService, TaskBrowserService, Profile, ProfileSetting, ProfileStat, ProfileCategory, ProfilePortfolio, Category, Location, Task, TaskFeedback
+    ProfileService, TaskBrowserService, Profile, ProfileSetting, ProfileStat, ProfileCategory, ProfilePortfolio, Category, Location, Task, TaskFeedback, File
 
 ### Просмотр и настройка профиля
-    ProfileService, Profile, ProfileSetting, ProfileCategory, ProfilePortfolio, Category, Location, User
+    ProfileService, Profile, ProfileSetting, ProfileCategory, ProfilePortfolio, Category, Location, User, File
 
 ### Просмотр собственных заданий
-    TaskBrowserService, ProfileService, Task, TaskFeedback, Category, Profile
+    TaskBrowserService, ProfileService, Task, TaskFeedback, Category, Profile, File

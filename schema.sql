@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS `profiles`;
 DROP TABLE IF EXISTS `categories`;
 DROP TABLE IF EXISTS `cities`;
 DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `files`;
 
 CREATE TABLE `categories` (
     `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -35,13 +36,18 @@ CREATE TABLE `users` (
     `password` varchar(255) NOT NULL
 )  CHARSET=utf8;
 
+CREATE TABLE `files` (
+    `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `path` varchar(255)
+) CHARSET=utf8;
+
 CREATE TABLE `profiles` (
     `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `user_id` int unsigned NOT NULL UNIQUE KEY,
     `creation_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `name` varchar(255) NOT NULL,
     `city_id` int unsigned NOT NULL,
-    `avatar_path` varchar(255),
+    `avatar_file_id` int unsigned,
     `birthday` date,
     `info` TEXT,
     `phone` varchar(255),
@@ -50,8 +56,10 @@ CREATE TABLE `profiles` (
     `last_action` datetime,
     KEY `idx_fk_profiles_user` (`user_id`),
     KEY `idx_fk_profiles_city` (`city_id`),
+    KEY `idx_fk_profiles_file` (`avatar_file_id`),
     CONSTRAINT `fk_profiles_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    CONSTRAINT `fk_profiles_city` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
+    CONSTRAINT `fk_profiles_city` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`),
+    CONSTRAINT `fk_profiles_file` FOREIGN KEY (`avatar_file_id`) REFERENCES `files` (`id`)
 ) CHARSET=utf8;
 
 CREATE TABLE `profile_favourites` (
@@ -68,7 +76,7 @@ CREATE TABLE `profile_settings` (
     `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
     `notify_message` bool NOT NULL DEFAULT TRUE,
-    `notify_start` bool NOT NULL DEFAULT TRUE,
+    `notify_assign` bool NOT NULL DEFAULT TRUE,
     `notify_finish` bool NOT NULL DEFAULT TRUE,
     `notify_refuse` bool NOT NULL DEFAULT TRUE,
     `notify_feedback` bool NOT NULL DEFAULT TRUE,
@@ -102,9 +110,11 @@ CREATE TABLE `profile_categories` (
 CREATE TABLE `profile_portfolios` (
     `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `profile_id` int unsigned NOT NULL,
-    `path` varchar(255) NOT NULL,
+    `file_id`  int unsigned NOT NULL,
     KEY `idx_fk_profile_portfolios_profile` (`profile_id`),
-    CONSTRAINT `fk_profile_portfolios_profile` FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`)
+    KEY `idx_fk_profile_portfolios_file` (`file_id`),
+    CONSTRAINT `fk_profile_portfolios_profile` FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`),
+    CONSTRAINT `fk_profile_portfolios_file` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`)
 )  CHARSET=utf8;
 
 CREATE TABLE `tasks` (
@@ -119,7 +129,7 @@ CREATE TABLE `tasks` (
     `city_id` int unsigned NOT NULL,
     `coordinate` point,
     `contractor_id` int unsigned,
-    `start_time` datetime,
+    `assign_time` datetime,
     `canceled_time` datetime,
     `failed_time` datetime,
     `status` tinyint,
@@ -130,9 +140,9 @@ CREATE TABLE `tasks` (
     CONSTRAINT `fk_tasks_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
     CONSTRAINT `fk_tasks_city` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`)
 ) CHARSET=utf8;
--- новое: expire_date > NOW() and start_time is null (and contractor_id is null)
+-- новое: expire_date > NOW() and assign_time is null (and contractor_id is null)
 -- отменено: canceled_time is not null (and contractor_id is null)
--- в работе: expire_date > NOW() and start_time is not null (and contractor_id is not null)
+-- в работе: expire_date > NOW() and assign_time is not null (and contractor_id is not null)
 -- провалено: failed_time is not null and not exists (select 1 from task_feedbacks where task_id = id)
 -- провалено: failed_time is not null and exists (select 1 from task_feedbacks where task_id = id)
 
@@ -140,9 +150,11 @@ CREATE TABLE `task_files` (
     `id` int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `task_id` int unsigned NOT NULL,
     `name` varchar(255) NOT NULL,
-    `path` varchar(255) NOT NULL,
+    `file_id` int unsigned NOT NULL,
     KEY `idx_fk_task_files_task` (`task_id`),
-    CONSTRAINT `fk_task_files_task` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`)
+    KEY `idx_fk_task_files_file` (`file_id`),
+    CONSTRAINT `fk_task_files_task` FOREIGN KEY (`task_id`) REFERENCES `tasks` (`id`),
+    CONSTRAINT `fk_task_files_file` FOREIGN KEY (`file_id`) REFERENCES `files` (`id`)
 )  CHARSET=utf8;
 
 CREATE TABLE `task_feedbacks` (
