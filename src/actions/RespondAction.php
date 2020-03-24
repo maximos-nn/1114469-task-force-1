@@ -14,7 +14,7 @@ class RespondAction extends AbstractAction
         return 'respond';
     }
 
-    public function isAuthotized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
     {
         return $userId !== $customerId && !$contractorId; // && ROLE_CONTRACTOR
     }

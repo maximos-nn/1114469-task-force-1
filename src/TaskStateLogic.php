@@ -24,7 +24,7 @@ class TaskStateLogic
     const STATE_INVALID = 'invalid'; // под вопросом
     const STATE_NEW = 'new';
     const STATE_CANCELED = 'canceled';
-    const STATE_INPROGRESS = 'in_progress';
+    const STATE_IN_PROGRESS = 'in_progress';
     const STATE_FINISHED = 'finished';
     const STATE_FAILED = 'failed';
 
@@ -61,7 +61,7 @@ class TaskStateLogic
             self::STATE_CANCELED => 'Отменено',
             self::STATE_FAILED => 'Провалено',
             self::STATE_FINISHED => 'Выполнено',
-            self::STATE_INPROGRESS => 'В работе',
+            self::STATE_IN_PROGRESS => 'В работе',
             self::STATE_INVALID => 'Не определено',
             self::STATE_NEW => 'Новое'
         ];
@@ -69,7 +69,6 @@ class TaskStateLogic
 
     public function getAvailableActions(string $state, int $userId): array
     {
-        $actions = [];
         switch ($state) {
             case self::STATE_NEW:
                 $actions = [
@@ -78,7 +77,7 @@ class TaskStateLogic
                     new AssignAction
                 ];
                 break;
-            case self::STATE_INPROGRESS:
+            case self::STATE_IN_PROGRESS:
                 $actions = [
                     new RefuseAction,
                     new FinishAction
@@ -90,7 +89,7 @@ class TaskStateLogic
 
         return array_values(
             array_filter($actions, function (AbstractAction $action) use ($userId) {
-                return $action->isAuthotized($userId, $this->customerId, $this->contractorId);
+                return $action->isAuthorized($userId, $this->customerId, $this->contractorId);
             })
         );
     }
@@ -99,17 +98,16 @@ class TaskStateLogic
     {
         switch ($action) {
             case self::ACTION_CREATE:
+            case self::ACTION_RESPOND:
                 return self::STATE_NEW;
             case self::ACTION_ASSIGN:
-                return self::STATE_INPROGRESS;
+                return self::STATE_IN_PROGRESS;
             case self::ACTION_CANCEL:
                 return self::STATE_CANCELED;
             case self::ACTION_FINISH:
                 return self::STATE_FINISHED;
             case self::ACTION_REFUSE:
                 return self::STATE_FAILED;
-            case self::ACTION_RESPOND:
-                return self::STATE_NEW;
             default:
                 return self::STATE_INVALID;
         }

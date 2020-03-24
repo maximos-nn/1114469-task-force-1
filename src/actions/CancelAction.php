@@ -14,7 +14,7 @@ class CancelAction extends AbstractAction
         return 'cancel';
     }
 
-    public function isAuthotized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
     {
         return $userId === $customerId;
     }

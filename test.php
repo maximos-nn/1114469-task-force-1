@@ -21,8 +21,8 @@ assert(
     'При запросе статуса на действие ' . TaskStateLogic::ACTION_CANCEL . ' возвращается статус ' . TaskStateLogic::STATE_CANCELED
 );
 assert(
-    $logic->getNextState(TaskStateLogic::ACTION_ASSIGN) === TaskStateLogic::STATE_INPROGRESS,
-    'При запросе статуса на действие ' . TaskStateLogic::ACTION_ASSIGN . ' возвращается статус ' . TaskStateLogic::STATE_INPROGRESS
+    $logic->getNextState(TaskStateLogic::ACTION_ASSIGN) === TaskStateLogic::STATE_IN_PROGRESS,
+    'При запросе статуса на действие ' . TaskStateLogic::ACTION_ASSIGN . ' возвращается статус ' . TaskStateLogic::STATE_IN_PROGRESS
 );
 assert(
     $logic->getNextState(TaskStateLogic::ACTION_FINISH) === TaskStateLogic::STATE_FINISHED,
@@ -36,17 +36,17 @@ assert(
 echo '<pre>', var_dump($logic->getActions()), '</pre>';
 echo '<pre>', var_dump($logic->getStates()), '</pre>';
 
-$actions = $logic->getAvailableActions(TaskStateLogic::STATE_INPROGRESS, $contractorId);
+$actions = $logic->getAvailableActions(TaskStateLogic::STATE_IN_PROGRESS, $contractorId);
 assert(
     count($actions) === 1 && get_class($actions[0]) === RefuseAction::class,
-    'Запрос доступных для исполнителя действий при статусе ' . TaskStateLogic::STATE_INPROGRESS . ' возвращает ' . RefuseAction::class
+    'Запрос доступных для исполнителя действий при статусе ' . TaskStateLogic::STATE_IN_PROGRESS . ' возвращает ' . RefuseAction::class
 );
 echo '<pre>', var_dump($actions), '</pre>';
 
-$actions = $logic->getAvailableActions(TaskStateLogic::STATE_INPROGRESS, $customerId);
+$actions = $logic->getAvailableActions(TaskStateLogic::STATE_IN_PROGRESS, $customerId);
 assert(
     count($actions) === 1 && get_class($actions[0]) === FinishAction::class,
-    'Запрос доступных для заказчика действий при статусе ' . TaskStateLogic::STATE_INPROGRESS . ' возвращает ' . FinishAction::class
+    'Запрос доступных для заказчика действий при статусе ' . TaskStateLogic::STATE_IN_PROGRESS . ' возвращает ' . FinishAction::class
 );
 echo '<pre>', var_dump($actions), '</pre>';
 
@@ -82,9 +82,9 @@ assert(
 );
 echo '<pre>', var_dump($actions), '</pre>';
 
-$actions = $logic->getAvailableActions(TaskStateLogic::STATE_INPROGRESS, 0);
+$actions = $logic->getAvailableActions(TaskStateLogic::STATE_IN_PROGRESS, 0);
 assert(
     !count($actions),
-    'Запрос доступных для иного пользователя действий при статусе ' . TaskStateLogic::STATE_INPROGRESS . ' возвращает пустой массив'
+    'Запрос доступных для иного пользователя действий при статусе ' . TaskStateLogic::STATE_IN_PROGRESS . ' возвращает пустой массив'
 );
 echo '<pre>', var_dump($actions), '</pre>';
