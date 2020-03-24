@@ -10,6 +10,10 @@ use TaskForce\actions\FinishAction;
 use TaskForce\actions\RefuseAction;
 use TaskForce\actions\RespondAction;
 
+use TaskForce\exceptions\InvalidTaskStateException;
+use TaskForce\exceptions\InvalidTaskRoleException;
+use TaskForce\exceptions\InvalidTaskActionException;
+
 class TaskStateLogic
 {
     const ACTION_CREATE = 'create'; // под вопросом
@@ -28,21 +32,28 @@ class TaskStateLogic
     const STATE_FINISHED = 'finished';
     const STATE_FAILED = 'failed';
 
-    // Пока не ясна логика использования
-    // const ROLE_CUSTOMER = 'заказчик';
-    // const ROLE_CONTRACTOR = 'исполнитель';
+    const ROLE_CUSTOMER = 'заказчик';
+    const ROLE_CONTRACTOR = 'исполнитель';
+    // const ROLE_ANONIMOUS = 'аноним'; // под вопросом
 
     private $customerId;
     private $contractorId;
-    // private $currentState;
+    private $currentState;
     // private $deadline;
 
-    public function __construct(int $customerId, int $contractorId)
+    public function __construct(int $customerId, int $contractorId, string $state)
     {
+        if (!array_key_exists($state, $this->getStates())) {
+            throw new InvalidTaskStateException('Неизвестный статус задания.');
+        }
+
         $this->customerId = $customerId;
         $this->contractorId = $contractorId;
+        $this->currentState = $state;
     }
 
+    // Функционал перенесен в классы действий.
+    // Метод, вероятно, будет удалён.
     public function getActions(): array
     {
         return [
@@ -67,9 +78,13 @@ class TaskStateLogic
         ];
     }
 
-    public function getAvailableActions(string $state, int $userId): array
+    public function getAvailableActions(int $userId, string $role): array
     {
-        switch ($state) {
+        if ($role !== self::ROLE_CUSTOMER && $role !== self::ROLE_CONTRACTOR) {
+            throw new InvalidTaskRoleException('Неизвестная роль пользователя.');
+        }
+
+        switch ($this->currentState) {
             case self::STATE_NEW:
                 $actions = [
                     new CancelAction,
@@ -87,9 +102,10 @@ class TaskStateLogic
                 return [];
         }
 
+        $isCustomer = $role === self::ROLE_CUSTOMER;
         return array_values(
-            array_filter($actions, function (AbstractAction $action) use ($userId) {
-                return $action->isAuthorized($userId, $this->customerId, $this->contractorId);
+            array_filter($actions, function (AbstractAction $action) use ($userId, $isCustomer) {
+                return $action->isAuthorized($userId, $this->customerId, $this->contractorId, $isCustomer);
             })
         );
     }
@@ -109,7 +125,7 @@ class TaskStateLogic
             case self::ACTION_REFUSE:
                 return self::STATE_FAILED;
             default:
-                return self::STATE_INVALID;
+                throw new InvalidTaskActionException('Неизвестное действие задания.');
         }
     }
 }

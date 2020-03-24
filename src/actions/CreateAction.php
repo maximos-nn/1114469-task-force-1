@@ -14,8 +14,8 @@ class CreateAction extends AbstractAction
         return 'create';
     }
 
-    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(int $userId, int $customerId, int $contractorId, bool $isCustomer): bool
     {
-        return !$customerId && !$contractorId; // && ROLE_CUSTOMER
+        return $isCustomer && !$customerId && !$contractorId;
     }
 }

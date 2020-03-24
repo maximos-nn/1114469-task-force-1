@@ -14,7 +14,7 @@ class RefuseAction extends AbstractAction
         return 'refuse';
     }
 
-    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(int $userId, int $customerId, int $contractorId, bool $isCustomer): bool
     {
         return $userId === $contractorId;
     }
