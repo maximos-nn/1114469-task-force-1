@@ -16,15 +16,6 @@ use TaskForce\exceptions\InvalidTaskActionException;
 
 class TaskStateLogic
 {
-    const ACTION_CREATE = 'create'; // под вопросом
-    const ACTION_CANCEL = 'cancel';
-    const ACTION_ASSIGN = 'assign';
-    const ACTION_FINISH = 'finish';
-    const ACTION_REFUSE = 'refuse';
-    const ACTION_RESPOND = 'respond';   // не меняет состояние задания
-                                        // с другой стороны, отсутствие откликов делает
-                                        // невозможным переход в состояние 'В работе'
-
     const STATE_INVALID = 'invalid'; // под вопросом
     const STATE_NEW = 'new';
     const STATE_CANCELED = 'canceled';
@@ -52,17 +43,29 @@ class TaskStateLogic
         $this->currentState = $state;
     }
 
+    public function getCustomerId(): int
+    {
+        return $this->customerId;
+    }
+
+    public function getContractorId(): int
+    {
+        return $this->contractorId;
+    }
+
     // Функционал перенесен в классы действий.
     // Метод, вероятно, будет удалён.
     public function getActions(): array
     {
+        // $class = RespondAction::class;
         return [
-            self::ACTION_ASSIGN => 'назначить',
-            self::ACTION_CANCEL => 'отменить',
-            self::ACTION_CREATE => 'создать',
-            self::ACTION_FINISH => 'завершить',
-            self::ACTION_REFUSE => 'отказаться',
-            self::ACTION_RESPOND => 'откликнуться'
+            AssignAction::getName() => AssignAction::getCaption(),
+            CancelAction::getName() => CancelAction::getCaption(),
+            CreateAction::getName() => CreateAction::getCaption(),
+            FinishAction::getName() => FinishAction::getCaption(),
+            RefuseAction::getName() => RefuseAction::getCaption(),
+            RespondAction::getName() => RespondAction::getCaption()
+            // $class::getName() => $class::getCaption(),
         ];
     }
 
@@ -87,25 +90,24 @@ class TaskStateLogic
         switch ($this->currentState) {
             case self::STATE_NEW:
                 $actions = [
-                    new CancelAction,
-                    new RespondAction,
-                    new AssignAction
+                    new CancelAction($userId, $role, $this),
+                    new RespondAction($userId, $role, $this),
+                    new AssignAction($userId, $role, $this)
                 ];
                 break;
             case self::STATE_IN_PROGRESS:
                 $actions = [
-                    new RefuseAction,
-                    new FinishAction
+                    new RefuseAction($userId, $role, $this),
+                    new FinishAction($userId, $role, $this)
                 ];
                 break;
             default:
                 return [];
         }
 
-        $isCustomer = $role === self::ROLE_CUSTOMER;
         return array_values(
-            array_filter($actions, function (AbstractAction $action) use ($userId, $isCustomer) {
-                return $action->isAuthorized($userId, $this->customerId, $this->contractorId, $isCustomer);
+            array_filter($actions, function (AbstractAction $action) {
+                return $action->isAuthorized();
             })
         );
     }
@@ -113,16 +115,16 @@ class TaskStateLogic
     public function getNextState(string $action): string
     {
         switch ($action) {
-            case self::ACTION_CREATE:
-            case self::ACTION_RESPOND:
+            case CreateAction::getName():
+            case RespondAction::getName():
                 return self::STATE_NEW;
-            case self::ACTION_ASSIGN:
+            case AssignAction::getName():
                 return self::STATE_IN_PROGRESS;
-            case self::ACTION_CANCEL:
+            case CancelAction::getName():
                 return self::STATE_CANCELED;
-            case self::ACTION_FINISH:
+            case FinishAction::getName():
                 return self::STATE_FINISHED;
-            case self::ACTION_REFUSE:
+            case RefuseAction::getName():
                 return self::STATE_FAILED;
             default:
                 throw new InvalidTaskActionException('Неизвестное действие задания.');

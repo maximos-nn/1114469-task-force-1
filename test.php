@@ -7,6 +7,7 @@ use TaskForce\actions\FinishAction;
 use TaskForce\actions\RespondAction;
 use TaskForce\actions\CancelAction;
 use TaskForce\actions\AssignAction;
+use TaskForce\actions\CreateAction;
 
 try {
     $customerId = 1;
@@ -14,24 +15,24 @@ try {
     $logic = new TaskStateLogic($customerId, $contractorId, TaskStateLogic::STATE_IN_PROGRESS);
 
     assert(
-        $logic->getNextState(TaskStateLogic::ACTION_CREATE) === TaskStateLogic::STATE_NEW,
-        'При запросе статуса на действие ' . TaskStateLogic::ACTION_CREATE . ' возвращается статус ' . TaskStateLogic::STATE_NEW
+        $logic->getNextState(CreateAction::getName()) === TaskStateLogic::STATE_NEW,
+        'При запросе статуса на действие ' . CreateAction::getName() . ' возвращается статус ' . TaskStateLogic::STATE_NEW
     );
     assert(
-        $logic->getNextState(TaskStateLogic::ACTION_CANCEL) === TaskStateLogic::STATE_CANCELED,
-        'При запросе статуса на действие ' . TaskStateLogic::ACTION_CANCEL . ' возвращается статус ' . TaskStateLogic::STATE_CANCELED
+        $logic->getNextState(CancelAction::getName()) === TaskStateLogic::STATE_CANCELED,
+        'При запросе статуса на действие ' . CancelAction::getName() . ' возвращается статус ' . TaskStateLogic::STATE_CANCELED
     );
     assert(
-        $logic->getNextState(TaskStateLogic::ACTION_ASSIGN) === TaskStateLogic::STATE_IN_PROGRESS,
-        'При запросе статуса на действие ' . TaskStateLogic::ACTION_ASSIGN . ' возвращается статус ' . TaskStateLogic::STATE_IN_PROGRESS
+        $logic->getNextState(AssignAction::getName()) === TaskStateLogic::STATE_IN_PROGRESS,
+        'При запросе статуса на действие ' . AssignAction::getName() . ' возвращается статус ' . TaskStateLogic::STATE_IN_PROGRESS
     );
     assert(
-        $logic->getNextState(TaskStateLogic::ACTION_FINISH) === TaskStateLogic::STATE_FINISHED,
-        'При запросе статуса на действие ' . TaskStateLogic::ACTION_FINISH . ' возвращается статус ' . TaskStateLogic::STATE_FINISHED
+        $logic->getNextState(FinishAction::getName()) === TaskStateLogic::STATE_FINISHED,
+        'При запросе статуса на действие ' . FinishAction::getName() . ' возвращается статус ' . TaskStateLogic::STATE_FINISHED
     );
     assert(
-        $logic->getNextState(TaskStateLogic::ACTION_REFUSE) === TaskStateLogic::STATE_FAILED,
-        'При запросе статуса на действие ' . TaskStateLogic::ACTION_REFUSE . ' возвращается статус ' . TaskStateLogic::STATE_FAILED
+        $logic->getNextState(RefuseAction::getName()) === TaskStateLogic::STATE_FAILED,
+        'При запросе статуса на действие ' . RefuseAction::getName() . ' возвращается статус ' . TaskStateLogic::STATE_FAILED
     );
 
     echo '<pre>', var_dump($logic->getActions()), '</pre>';

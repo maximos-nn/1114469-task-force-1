@@ -4,18 +4,18 @@ namespace TaskForce\actions;
 
 class RefuseAction extends AbstractAction
 {
-    public function getCaption(): string
+    public static function getCaption(): string
     {
         return 'отказаться';
     }
 
-    public function getName(): string
+    public static function getName(): string
     {
         return 'refuse';
     }
 
-    public function isAuthorized(int $userId, int $customerId, int $contractorId, bool $isCustomer): bool
+    public function isAuthorized(): bool
     {
-        return $userId === $contractorId;
+        return $this->userId === $this->taskStateLogic->getContractorId();
     }
 }
