@@ -4,18 +4,18 @@ namespace TaskForce\actions;
 
 class CreateAction extends AbstractAction
 {
-    public function getCaption(): string
+    public static function getCaption(): string
     {
         return 'создать';
     }
 
-    public function getName(): string
+    public static function getName(): string
     {
         return 'create';
     }
 
-    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(): bool
     {
-        return !$customerId && !$contractorId; // && ROLE_CUSTOMER
+        return $this->isCustomer && !$this->taskStateLogic->getCustomerId() && !$this->taskStateLogic->getContractorId();
     }
 }

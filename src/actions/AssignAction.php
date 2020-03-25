@@ -4,18 +4,18 @@ namespace TaskForce\actions;
 
 class AssignAction extends AbstractAction
 {
-    public function getCaption(): string
+    public static function getCaption(): string
     {
         return 'назначить';
     }
 
-    public function getName(): string
+    public static function getName(): string
     {
         return 'assign';
     }
 
-    public function isAuthorized(int $userId, int $customerId, int $contractorId): bool
+    public function isAuthorized(): bool
     {
-        return $userId === $customerId;
+        return $this->userId === $this->taskStateLogic->getCustomerId();
     }
 }
