@@ -27,7 +27,10 @@ CREATE TABLE `categories` (
 
 CREATE TABLE `cities` (
     `id` int unsigned AUTO_INCREMENT PRIMARY KEY,
-    `name` varchar(255) NOT NULL UNIQUE KEY
+    `name` varchar(255) NOT NULL,
+    -- `coordinate` point NOT NULL,
+    `latitude` decimal(10, 8) NOT NULL,
+    `longitude` decimal(11, 8) NOT NULL
 )  CHARSET=utf8;
 
 CREATE TABLE `users` (
@@ -127,7 +130,9 @@ CREATE TABLE `tasks` (
     `budget` int unsigned,
     `expire_date` datetime,
     `city_id` int unsigned NOT NULL,
-    `coordinate` point,
+    -- `coordinate` point,
+    `latitude` decimal(10, 8),
+    `longitude` decimal(11, 8),
     `contractor_id` int unsigned,
     `assign_time` datetime,
     `canceled_time` datetime,
