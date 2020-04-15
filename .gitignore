@@ -1,6 +1,4 @@
 # yii console commands
-/init
-/init.bat
 /yii
 /yii.bat
 /yii_test
