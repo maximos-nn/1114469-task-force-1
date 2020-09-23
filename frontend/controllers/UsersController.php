@@ -16,7 +16,7 @@ class UsersController extends \yii\web\Controller
 
         $users = Profiles::find()
         ->alias('p')
-        ->select(['p.*', 'cat.name as category', 'st.*', 'feedbacks' => $subquery])
+        ->select(['p.*', 'feedbacks' => $subquery])
         ->joinWith('categories cat', true, 'INNER JOIN')
         ->joinWith('profileStats st', true, 'INNER JOIN')
         ->orderBy('p.creation_time DESC')
