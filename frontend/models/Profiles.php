@@ -37,6 +37,8 @@ use Yii;
  */
 class Profiles extends \yii\db\ActiveRecord
 {
+    public $feedbacks;
+
     /**
      * {@inheritdoc}
      */
