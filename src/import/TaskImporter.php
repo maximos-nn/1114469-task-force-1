@@ -5,7 +5,7 @@ namespace TaskForce\import;
 class TaskImporter
 {
     private const CSV_FIELDS = ['dt_add', 'category_id', 'description', 'expire', 'name', 'budget', 'lat', 'long'];
-    private const DB_TABLE_FIELDS = ['creation_time', 'category_id', 'description', 'expire_date', 'title', 'budget', 'latitude', 'longitude', 'city_id', 'profile_id'];
+    private const DB_TABLE_FIELDS = ['creation_time', 'category_id', 'description', 'expire_date', 'title', 'budget', 'latitude', 'longitude', 'city_id', 'user_id'];
     private const DB_TABLE_NAME = 'tasks';
 
     private $file;

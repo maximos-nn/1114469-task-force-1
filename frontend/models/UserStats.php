@@ -5,25 +5,25 @@ namespace frontend\models;
 use Yii;
 
 /**
- * This is the model class for table "profile_stats".
+ * This is the model class for table "user_stats".
  *
  * @property int $id
- * @property int $profile_id
+ * @property int $user_id
  * @property int $tasks_total
  * @property int $tasks_failed
  * @property int $views
  * @property int $avg_rate
  *
- * @property Profiles $profile
+ * @property Users $user
  */
-class ProfileStats extends \yii\db\ActiveRecord
+class UserStats extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'profile_stats';
+        return 'user_stats';
     }
 
     /**
@@ -32,9 +32,9 @@ class ProfileStats extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id'], 'required'],
-            [['profile_id', 'tasks_total', 'tasks_failed', 'views', 'avg_rate'], 'integer'],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['user_id'], 'required'],
+            [['user_id', 'tasks_total', 'tasks_failed', 'views', 'avg_rate'], 'integer'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -45,7 +45,7 @@ class ProfileStats extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'profile_id' => 'Profile ID',
+            'user_id' => 'User ID',
             'tasks_total' => 'Tasks Total',
             'tasks_failed' => 'Tasks Failed',
             'views' => 'Views',
@@ -54,12 +54,12 @@ class ProfileStats extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Profile]].
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
+    public function getUser()
     {
-        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

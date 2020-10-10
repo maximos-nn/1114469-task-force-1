@@ -11,9 +11,9 @@ use Yii;
  * @property string $name
  * @property string $alias
  *
- * @property ProfileCategories[] $profileCategories
- * @property Profiles[] $profiles
  * @property Tasks[] $tasks
+ * @property UserCategories[] $userCategories
+ * @property Users[] $users
  */
 class Categories extends \yii\db\ActiveRecord
 {
@@ -51,26 +51,6 @@ class Categories extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[ProfileCategories]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfileCategories()
-    {
-        return $this->hasMany(ProfileCategories::className(), ['category_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Profiles]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfiles()
-    {
-        return $this->hasMany(Profiles::className(), ['id' => 'profile_id'])->viaTable('profile_categories', ['category_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[Tasks]].
      *
      * @return \yii\db\ActiveQuery
@@ -78,5 +58,25 @@ class Categories extends \yii\db\ActiveRecord
     public function getTasks()
     {
         return $this->hasMany(Tasks::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserCategories]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserCategories()
+    {
+        return $this->hasMany(UserCategories::className(), ['category_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(Users::className(), ['id' => 'user_id'])->viaTable('user_categories', ['category_id' => 'id']);
     }
 }

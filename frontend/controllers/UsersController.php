@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Profiles;
+use frontend\models\Users;
 use frontend\models\Tasks;
 
 class UsersController extends \yii\web\Controller
@@ -12,14 +12,14 @@ class UsersController extends \yii\web\Controller
         $subquery = Tasks::find()
         ->select(['COUNT(*)'])
         ->joinWith('taskFeedbacks', true, 'INNER JOIN')
-        ->where('contractor_id = p.id');
+        ->where('contractor_id = u.id');
 
-        $users = Profiles::find()
-        ->alias('p')
-        ->select(['p.*', 'feedbacks' => $subquery])
+        $users = Users::find()
+        ->alias('u')
+        ->select(['u.*', 'feedbacks' => $subquery])
         ->joinWith('categories cat', true, 'INNER JOIN')
-        ->joinWith('profileStats st', true, 'INNER JOIN')
-        ->orderBy('p.creation_time DESC')
+        ->joinWith('userStats st', true, 'INNER JOIN')
+        ->orderBy('u.creation_time DESC')
         ->all();
         return $this->render('index', ['users' => $users]);
     }

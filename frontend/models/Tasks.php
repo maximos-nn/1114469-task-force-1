@@ -9,7 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $creation_time
- * @property int $profile_id
+ * @property int $user_id
  * @property int $category_id
  * @property string $title
  * @property string $description
@@ -30,7 +30,8 @@ use Yii;
  * @property TaskResponses[] $taskResponses
  * @property Categories $category
  * @property Cities $city
- * @property Profiles $profile
+ * @property Users $contractor
+ * @property Users $user
  */
 class Tasks extends \yii\db\ActiveRecord
 {
@@ -49,14 +50,15 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             [['creation_time', 'expire_date', 'assign_time', 'canceled_time', 'failed_time'], 'safe'],
-            [['profile_id', 'category_id', 'title', 'description', 'city_id'], 'required'],
-            [['profile_id', 'category_id', 'budget', 'city_id', 'contractor_id', 'status'], 'integer'],
+            [['user_id', 'category_id', 'title', 'description', 'city_id'], 'required'],
+            [['user_id', 'category_id', 'budget', 'city_id', 'contractor_id', 'status'], 'integer'],
             [['description'], 'string'],
             [['latitude', 'longitude'], 'number'],
             [['title'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['city_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cities::className(), 'targetAttribute' => ['city_id' => 'id']],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['contractor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['contractor_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -68,7 +70,7 @@ class Tasks extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'creation_time' => 'Creation Time',
-            'profile_id' => 'Profile ID',
+            'user_id' => 'User ID',
             'category_id' => 'Category ID',
             'title' => 'Title',
             'description' => 'Description',
@@ -146,12 +148,22 @@ class Tasks extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Profile]].
+     * Gets query for [[Contractor]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
+    public function getContractor()
     {
-        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
+        return $this->hasOne(Users::className(), ['id' => 'contractor_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

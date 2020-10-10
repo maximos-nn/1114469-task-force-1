@@ -10,9 +10,9 @@ use Yii;
  * @property int $id
  * @property string $path
  *
- * @property ProfilePortfolios[] $profilePortfolios
- * @property Profiles[] $profiles
  * @property TaskFiles[] $taskFiles
+ * @property UserPortfolios[] $userPortfolios
+ * @property Users[] $users
  */
 class Files extends \yii\db\ActiveRecord
 {
@@ -47,26 +47,6 @@ class Files extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[ProfilePortfolios]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfilePortfolios()
-    {
-        return $this->hasMany(ProfilePortfolios::className(), ['file_id' => 'id']);
-    }
-
-    /**
-     * Gets query for [[Profiles]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfiles()
-    {
-        return $this->hasMany(Profiles::className(), ['avatar_file_id' => 'id']);
-    }
-
-    /**
      * Gets query for [[TaskFiles]].
      *
      * @return \yii\db\ActiveQuery
@@ -74,5 +54,25 @@ class Files extends \yii\db\ActiveRecord
     public function getTaskFiles()
     {
         return $this->hasMany(TaskFiles::className(), ['file_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[UserPortfolios]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserPortfolios()
+    {
+        return $this->hasMany(UserPortfolios::className(), ['file_id' => 'id']);
+    }
+
+    /**
+     * Gets query for [[Users]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsers()
+    {
+        return $this->hasMany(Users::className(), ['avatar_file_id' => 'id']);
     }
 }

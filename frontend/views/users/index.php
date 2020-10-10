@@ -21,13 +21,13 @@
         <div class="feedback-card__top">
             <div class="user__search-icon">
                 <a href="#"><img src="./img/man-glasses.jpg" width="65" height="65"></a>
-                <span><?= $user->profileStats[0]->tasks_total ?> заданий</span>
+                <span><?= $user->userStats[0]->tasks_total ?> заданий</span>
                 <span><?= $user->feedbacks ?> отзывов</span>
             </div>
             <div class="feedback-card__top--name user__search-card">
                 <p class="link-name"><a href="#" class="link-regular"><?= $user->name ?></a></p>
                 <?php
-                    $avgRate = $user->profileStats[0]->avg_rate;
+                    $avgRate = $user->userStats[0]->avg_rate;
                     $ratingStarsCount = 5;
                 ?>
                 <?php for ($i = 1; $i <= $ratingStarsCount; $i++): ?>

@@ -5,10 +5,10 @@ namespace frontend\models;
 use Yii;
 
 /**
- * This is the model class for table "profile_settings".
+ * This is the model class for table "user_settings".
  *
  * @property int $id
- * @property int $profile_id
+ * @property int $user_id
  * @property int $notify_message
  * @property int $notify_assign
  * @property int $notify_finish
@@ -17,16 +17,16 @@ use Yii;
  * @property int $hide_contacts
  * @property int $hide_profile
  *
- * @property Profiles $profile
+ * @property Users $user
  */
-class ProfileSettings extends \yii\db\ActiveRecord
+class UserSettings extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'profile_settings';
+        return 'user_settings';
     }
 
     /**
@@ -35,9 +35,9 @@ class ProfileSettings extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id'], 'required'],
-            [['profile_id', 'notify_message', 'notify_assign', 'notify_finish', 'notify_refuse', 'notify_feedback', 'hide_contacts', 'hide_profile'], 'integer'],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['user_id'], 'required'],
+            [['user_id', 'notify_message', 'notify_assign', 'notify_finish', 'notify_refuse', 'notify_feedback', 'hide_contacts', 'hide_profile'], 'integer'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -48,7 +48,7 @@ class ProfileSettings extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'profile_id' => 'Profile ID',
+            'user_id' => 'User ID',
             'notify_message' => 'Notify Message',
             'notify_assign' => 'Notify Assign',
             'notify_finish' => 'Notify Finish',
@@ -60,12 +60,12 @@ class ProfileSettings extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Profile]].
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
+    public function getUser()
     {
-        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

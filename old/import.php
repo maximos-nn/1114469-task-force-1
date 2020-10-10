@@ -19,13 +19,10 @@ try {
     $categoryImporter = new CategoryImporter('../data/categories.csv');
     $categoriesCount = $categoryImporter->import();
 
-    $userImporter = new UserImporter('../data/users.csv');
-    $userImporter->import();
+    $userImporter = new UserImporter('../data/users.csv', '../data/profiles.csv', $randomCity);
+    $usersCount = $userImporter->import();
 
-    $profileImporter = new ProfileImporter('../data/profiles.csv', '../data/users.csv', $randomCity);
-    $profilesCount = $profileImporter->import();
-
-    $randomUser = new RandomInt(1, $profilesCount);
+    $randomUser = new RandomInt(1, $usersCount);
 
     $taskImporter = new TaskImporter('../data/tasks.csv', $randomCity, $randomUser);
     $tasksCount = $taskImporter->import();

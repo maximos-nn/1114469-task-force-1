@@ -5,7 +5,7 @@ namespace TaskForce\import;
 class ResponseImporter
 {
     private const CSV_FIELDS = ['dt_add', 'description'];
-    private const DB_TABLE_FIELDS = ['creation_time', 'comment', 'task_id', 'profile_id'];
+    private const DB_TABLE_FIELDS = ['creation_time', 'comment', 'task_id', 'user_id'];
     private const DB_TABLE_NAME = 'task_responses';
 
     private $file;

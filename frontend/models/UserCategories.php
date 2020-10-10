@@ -5,23 +5,23 @@ namespace frontend\models;
 use Yii;
 
 /**
- * This is the model class for table "profile_categories".
+ * This is the model class for table "user_categories".
  *
  * @property int $id
- * @property int $profile_id
+ * @property int $user_id
  * @property int $category_id
  *
  * @property Categories $category
- * @property Profiles $profile
+ * @property Users $user
  */
-class ProfileCategories extends \yii\db\ActiveRecord
+class UserCategories extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'profile_categories';
+        return 'user_categories';
     }
 
     /**
@@ -30,11 +30,11 @@ class ProfileCategories extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['profile_id', 'category_id'], 'required'],
-            [['profile_id', 'category_id'], 'integer'],
-            [['profile_id', 'category_id'], 'unique', 'targetAttribute' => ['profile_id', 'category_id']],
+            [['user_id', 'category_id'], 'required'],
+            [['user_id', 'category_id'], 'integer'],
+            [['user_id', 'category_id'], 'unique', 'targetAttribute' => ['user_id', 'category_id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Categories::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -45,7 +45,7 @@ class ProfileCategories extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'profile_id' => 'Profile ID',
+            'user_id' => 'User ID',
             'category_id' => 'Category ID',
         ];
     }
@@ -61,12 +61,12 @@ class ProfileCategories extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[Profile]].
+     * Gets query for [[User]].
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProfile()
+    public function getUser()
     {
-        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }

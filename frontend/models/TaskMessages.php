@@ -14,7 +14,9 @@ use Yii;
  * @property int $to_id
  * @property string $text
  *
+ * @property Users $from
  * @property Tasks $task
+ * @property Users $to
  */
 class TaskMessages extends \yii\db\ActiveRecord
 {
@@ -36,7 +38,9 @@ class TaskMessages extends \yii\db\ActiveRecord
             [['task_id', 'from_id', 'to_id', 'text'], 'required'],
             [['task_id', 'from_id', 'to_id'], 'integer'],
             [['text'], 'string'],
+            [['from_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['from_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['to_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['to_id' => 'id']],
         ];
     }
 
@@ -56,6 +60,16 @@ class TaskMessages extends \yii\db\ActiveRecord
     }
 
     /**
+     * Gets query for [[From]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFrom()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'from_id']);
+    }
+
+    /**
      * Gets query for [[Task]].
      *
      * @return \yii\db\ActiveQuery
@@ -63,5 +77,15 @@ class TaskMessages extends \yii\db\ActiveRecord
     public function getTask()
     {
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
+    }
+
+    /**
+     * Gets query for [[To]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTo()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'to_id']);
     }
 }

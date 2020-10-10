@@ -10,13 +10,13 @@ use Yii;
  * @property int $id
  * @property string $creation_time
  * @property int $task_id
- * @property int $profile_id
+ * @property int $user_id
  * @property int|null $price
  * @property string|null $comment
  * @property string|null $decline_time
  *
- * @property Profiles $profile
  * @property Tasks $task
+ * @property Users $user
  */
 class TaskResponses extends \yii\db\ActiveRecord
 {
@@ -35,11 +35,11 @@ class TaskResponses extends \yii\db\ActiveRecord
     {
         return [
             [['creation_time', 'decline_time'], 'safe'],
-            [['task_id', 'profile_id'], 'required'],
-            [['task_id', 'profile_id', 'price'], 'integer'],
+            [['task_id', 'user_id'], 'required'],
+            [['task_id', 'user_id', 'price'], 'integer'],
             [['comment'], 'string'],
-            [['profile_id'], 'exist', 'skipOnError' => true, 'targetClass' => Profiles::className(), 'targetAttribute' => ['profile_id' => 'id']],
             [['task_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tasks::className(), 'targetAttribute' => ['task_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -52,21 +52,11 @@ class TaskResponses extends \yii\db\ActiveRecord
             'id' => 'ID',
             'creation_time' => 'Creation Time',
             'task_id' => 'Task ID',
-            'profile_id' => 'Profile ID',
+            'user_id' => 'User ID',
             'price' => 'Price',
             'comment' => 'Comment',
             'decline_time' => 'Decline Time',
         ];
-    }
-
-    /**
-     * Gets query for [[Profile]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProfile()
-    {
-        return $this->hasOne(Profiles::className(), ['id' => 'profile_id']);
     }
 
     /**
@@ -77,5 +67,15 @@ class TaskResponses extends \yii\db\ActiveRecord
     public function getTask()
     {
         return $this->hasOne(Tasks::className(), ['id' => 'task_id']);
+    }
+
+    /**
+     * Gets query for [[User]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
 }
